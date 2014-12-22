@@ -1,13 +1,12 @@
-{% extends 'base.html' %}
-
-{% load staticfiles %}
-
-{% block title %}{{ category_name }}{% endblock %}
+{% extends "base.html" %}
 
 {% block body_block %}
     <link rel="stylesheet"
     href="http://getbootstrap.com/examples/signin/signin.css">
-    <form action="." method="post" class="form-signin" role="form">
+    <div class="page-header">
+       <h1>Login to Rango</h1>
+    </div>
+    <form action="/rango/login/" method="post" id="login_form">
         {% csrf_token %}
         <h2 class="form-signin-heading">Please sign in</h2>
         <input class="form-control" placeholder="Username" type="text" 
