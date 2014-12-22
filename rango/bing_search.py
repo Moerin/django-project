@@ -1,8 +1,7 @@
 import json
 import urllib, urllib2
+from rango import keys
 
-# Bing API Key
-BING_API_KEY = G0auJySskzKyjbhtLkRwH0VgxBoeEolpsZmE67fFd0k
 
 def run_query(search_terms):
     # Specify the base
@@ -22,10 +21,10 @@ def run_query(search_terms):
         offset,
         query)
 
-    username = ''
+    username = 'trash.sebastien@gmail.com'
 
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    password_mgr.add_password(None,search_url, username, BING_API_KEY)
+    password_mgr.add_password(None, search_url, username, keys.BING_API_KEY)
 
     results = []
 
@@ -35,3 +34,37 @@ def run_query(search_terms):
         urllib2.install_opener(opener)
 
         response = urllib2.urlopen(search_url).read()
+
+        json_response = json.loads(response)
+
+        for result in json_response['d']['results']:
+            results.append({
+                'title': result['Title'],
+                'link': result['Url'],
+                'summary': result['Description']})
+
+    except urllib2.URLError, e:
+        print("Error when querying the Bing API: ", e)
+
+    return results
+
+
+def main():
+    query_search = input("Enter a query: ")
+
+    query_result = run_query(query_search)
+
+    i = 1
+    for result in query_result:
+        # print("rank : {0}, title: {1}, URL: {2}".format(i,
+        #                                                result['title'],
+        #                                                result['link']))
+        print("rank : ", i)
+        print("title : ", result['title'])
+        print("URL : ", result['link'])
+
+        i = i + 1
+
+if __name__ == "__main__":
+#    import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
+    main()

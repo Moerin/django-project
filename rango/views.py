@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from .forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from .models import Category, Page
+from .bing_search import run_query
 
 
 def index(request):
@@ -24,8 +25,9 @@ def index(request):
 
     last_visit = request.session.get('last_visit')
     if last_visit:
-        last_visit_time = datetime.strptime(last_visit[:-7],
-                                             "%Y-%m-%d %H:%M:%S")
+        last_visit_time = datetime.strptime(
+            last_visit[:-7],
+            "%Y-%m-%d %H:%M:%S")
         if (datetime.now() - last_visit_time).seconds > 5:
             visits = visits + 1
             reset_last_visit_time = True
@@ -41,7 +43,6 @@ def index(request):
     response = render(request, 'rango/index.html', context_dict)
 
     return response
-
 
 
 def category(request, category_name_slug):
@@ -190,3 +191,15 @@ def restricted(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/rango/')
+
+
+def search(request):
+    result_list = []
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = run_query(query)
+
+    return render(request, 'rango/search.html', {'result_list': result_list})

@@ -1,5 +1,8 @@
 # ignore py compiled ".pyc"
 *.pyc
 
-" ignore vim swap files
+# ignore vim swap files
 *.swp
+
+# ignore api keys
+keys.py
