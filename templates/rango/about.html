@@ -1,15 +1,19 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
 {% load staticfiles %}
 
-<html lang="en">
-<head>
-    <title>About</title>
-    <meta charset="UTF-8">
-</head>
-<body>
-    You are on the about page
-    <a href="/rango/">Main</a><br />
-    <img src="{% static "images/super-mario-world.jpg" %}"
-         alt="Picture of super mario world" />    
-</body>
-</html>
+{% block title %}About{% endblock %}
+
+{% block body_block %}
+    <div class="page-header">
+        <h1>About</h1>
+    </div>
+    You are on the <strong>About</strong> page</ br>
+    <a href="/rango/">Click to return to the Main</a><br />
+    <p>Number of visits: {{ visits }}</p>
+    <div>
+        <p></strong>.</p>
+        <img width="50%" height="50%" src="{% static "images/super-mario-world.jpg" %}"
+             alt="Picture of super mario world" alt="Picture of mario" />
+    </div>
+{% endblock %}

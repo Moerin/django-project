@@ -3,7 +3,7 @@ Django settings for tango_with_django_project project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
-
+Login
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
@@ -37,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,4 +99,12 @@ TEMPLATE_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_URL = '/rango/login/'
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = '/rango/'
+LOGIN_URL = '/accounts/login/'
+
+# Email settings
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
