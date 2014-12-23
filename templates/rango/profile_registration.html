@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile registration{% endblock %}
+
+{% block body_block %}
+    {% if registered %}
+        <strong>Details added to your profile</strong>
+    {% else %}
+   <form id="registration_form" method="post" action="/rango/add_profile/">
+        <h2 class="form-signin-heading">Enter profile details</h2> 
+        {% csrf_token %} 
+        {% for hidden in profile_form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        {% for field in profile_form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}<br/>
+            {{ field }}<br/>
+        {% endfor %}
+        <br/>
+        <button class="btn btn-primary" type="submit" name="submit">Add your details</button>
+    </form>
+    {% endif %}
+{% endblock %}
+

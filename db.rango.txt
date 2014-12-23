@@ -1,0 +1,130 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE "django_migrations" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "app" varchar(255) NOT NULL, "name" varchar(255) NOT NULL, "applied" datetime NOT NULL);
+INSERT INTO "django_migrations" VALUES(1,'contenttypes','0001_initial','2014-11-23 23:12:10.169398');
+INSERT INTO "django_migrations" VALUES(2,'auth','0001_initial','2014-11-23 23:12:10.404810');
+INSERT INTO "django_migrations" VALUES(3,'admin','0001_initial','2014-11-23 23:12:10.652786');
+INSERT INTO "django_migrations" VALUES(4,'sessions','0001_initial','2014-11-23 23:12:10.899166');
+INSERT INTO "django_migrations" VALUES(5,'rango','0001_initial','2014-11-25 20:49:15.943270');
+CREATE TABLE "rango_category" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" varchar(128) NOT NULL UNIQUE,
+    "views" integer NOT NULL,
+    "likes" integer NOT NULL,
+    "slug" varchar(50) NOT NULL UNIQUE
+);
+INSERT INTO "rango_category" VALUES(1,'Python',0,0,'python');
+INSERT INTO "rango_category" VALUES(2,'Django',0,0,'django');
+INSERT INTO "rango_category" VALUES(3,'Other Frameworks',0,0,'other-frameworks');
+INSERT INTO "rango_category" VALUES(4,'Angular',0,0,'angular');
+CREATE TABLE "rango_page" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "category_id" integer NOT NULL REFERENCES "rango_category" ("id"),
+    "title" varchar(128) NOT NULL,
+    "url" varchar(200) NOT NULL,
+    "views" integer NOT NULL
+);
+INSERT INTO "rango_page" VALUES(1,1,'Official Python Tutorial','http://docs.python.org/2/tutorial/',2);
+INSERT INTO "rango_page" VALUES(2,1,'How to Think like a Computer Scientist','http://www.greenteapress.com/thinkpython/',0);
+INSERT INTO "rango_page" VALUES(3,1,'Learn Python in 10 Minutes','http://www.korokithakis.net/tutorials/python/',0);
+INSERT INTO "rango_page" VALUES(4,2,'Official Django Tutorial','https://docs.djangoproject.com/en/1.5/intro/tutorial01/',0);
+INSERT INTO "rango_page" VALUES(5,2,'Django Rocks','http://www.djangorocks.com/',0);
+INSERT INTO "rango_page" VALUES(6,2,'How to Tango with Django','http://www.tangowithdjango.com/',0);
+INSERT INTO "rango_page" VALUES(7,3,'Bottle','http://bottlepy.org/docs/dev/',0);
+INSERT INTO "rango_page" VALUES(8,3,'Flask','http://flask.pocoo.org',0);
+INSERT INTO "rango_page" VALUES(9,1,'Official Python Tutorial','http://docs.python.org/2/tutorial/',54);
+INSERT INTO "rango_page" VALUES(10,1,'How to Think like a Computer Scientist','http://www.greenteapress.com/thinkpython/',55);
+INSERT INTO "rango_page" VALUES(11,1,'Learn Python in 10 Minutes','http://www.korokithakis.net/tutorials/python/',99);
+INSERT INTO "rango_page" VALUES(12,2,'Official Django Tutorial','https://docs.djangoproject.com/en/1.5/intro/tutorial01/',75);
+INSERT INTO "rango_page" VALUES(13,2,'Django Rocks','http://www.djangorocks.com/',89);
+INSERT INTO "rango_page" VALUES(14,2,'How to Tango with Django','http://www.tangowithdjango.com/',14);
+INSERT INTO "rango_page" VALUES(15,3,'Bottle','http://bottlepy.org/docs/dev/',26);
+INSERT INTO "rango_page" VALUES(16,3,'Flask','http://flask.pocoo.org',60);
+CREATE TABLE "django_content_type" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(100) NOT NULL, "app_label" varchar(100) NOT NULL, "model" varchar(100) NOT NULL, UNIQUE ("app_label", "model"));
+INSERT INTO "django_content_type" VALUES(1,'log entry','admin','logentry');
+INSERT INTO "django_content_type" VALUES(2,'permission','auth','permission');
+INSERT INTO "django_content_type" VALUES(3,'group','auth','group');
+INSERT INTO "django_content_type" VALUES(4,'user','auth','user');
+INSERT INTO "django_content_type" VALUES(5,'content type','contenttypes','contenttype');
+INSERT INTO "django_content_type" VALUES(6,'session','sessions','session');
+INSERT INTO "django_content_type" VALUES(7,'category','rango','category');
+INSERT INTO "django_content_type" VALUES(8,'page','rango','page');
+INSERT INTO "django_content_type" VALUES(9,'user profile','rango','userprofile');
+INSERT INTO "django_content_type" VALUES(10,'registration profile','registration','registrationprofile');
+CREATE TABLE "auth_permission" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(50) NOT NULL, "content_type_id" integer NOT NULL REFERENCES "django_content_type" ("id"), "codename" varchar(100) NOT NULL, UNIQUE ("content_type_id", "codename"));
+INSERT INTO "auth_permission" VALUES(1,'Can add log entry',1,'add_logentry');
+INSERT INTO "auth_permission" VALUES(2,'Can change log entry',1,'change_logentry');
+INSERT INTO "auth_permission" VALUES(3,'Can delete log entry',1,'delete_logentry');
+INSERT INTO "auth_permission" VALUES(4,'Can add permission',2,'add_permission');
+INSERT INTO "auth_permission" VALUES(5,'Can change permission',2,'change_permission');
+INSERT INTO "auth_permission" VALUES(6,'Can delete permission',2,'delete_permission');
+INSERT INTO "auth_permission" VALUES(7,'Can add group',3,'add_group');
+INSERT INTO "auth_permission" VALUES(8,'Can change group',3,'change_group');
+INSERT INTO "auth_permission" VALUES(9,'Can delete group',3,'delete_group');
+INSERT INTO "auth_permission" VALUES(10,'Can add user',4,'add_user');
+INSERT INTO "auth_permission" VALUES(11,'Can change user',4,'change_user');
+INSERT INTO "auth_permission" VALUES(12,'Can delete user',4,'delete_user');
+INSERT INTO "auth_permission" VALUES(13,'Can add content type',5,'add_contenttype');
+INSERT INTO "auth_permission" VALUES(14,'Can change content type',5,'change_contenttype');
+INSERT INTO "auth_permission" VALUES(15,'Can delete content type',5,'delete_contenttype');
+INSERT INTO "auth_permission" VALUES(16,'Can add session',6,'add_session');
+INSERT INTO "auth_permission" VALUES(17,'Can change session',6,'change_session');
+INSERT INTO "auth_permission" VALUES(18,'Can delete session',6,'delete_session');
+INSERT INTO "auth_permission" VALUES(19,'Can add category',7,'add_category');
+INSERT INTO "auth_permission" VALUES(20,'Can change category',7,'change_category');
+INSERT INTO "auth_permission" VALUES(21,'Can delete category',7,'delete_category');
+INSERT INTO "auth_permission" VALUES(22,'Can add page',8,'add_page');
+INSERT INTO "auth_permission" VALUES(23,'Can change page',8,'change_page');
+INSERT INTO "auth_permission" VALUES(24,'Can delete page',8,'delete_page');
+INSERT INTO "auth_permission" VALUES(25,'Can add user profile',9,'add_userprofile');
+INSERT INTO "auth_permission" VALUES(26,'Can change user profile',9,'change_userprofile');
+INSERT INTO "auth_permission" VALUES(27,'Can delete user profile',9,'delete_userprofile');
+INSERT INTO "auth_permission" VALUES(28,'Can add registration profile',10,'add_registrationprofile');
+INSERT INTO "auth_permission" VALUES(29,'Can change registration profile',10,'change_registrationprofile');
+INSERT INTO "auth_permission" VALUES(30,'Can delete registration profile',10,'delete_registrationprofile');
+CREATE TABLE "auth_group" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(80) NOT NULL UNIQUE);
+CREATE TABLE "auth_group_permissions" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "group_id" integer NOT NULL REFERENCES "auth_group" ("id"), "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id"), UNIQUE ("group_id", "permission_id"));
+CREATE TABLE "auth_user" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "password" varchar(128) NOT NULL, "last_login" datetime NOT NULL, "is_superuser" bool NOT NULL, "username" varchar(30) NOT NULL UNIQUE, "first_name" varchar(30) NOT NULL, "last_name" varchar(30) NOT NULL, "email" varchar(75) NOT NULL, "is_staff" bool NOT NULL, "is_active" bool NOT NULL, "date_joined" datetime NOT NULL);
+INSERT INTO "auth_user" VALUES(1,'pbkdf2_sha256$12000$9IGfLdkmkq9F$QR6QUL19Ta+EQh0G2mFRNDWZVJL0Eq9A5ML8bB6ual0=','2014-12-22 16:49:03.133431',1,'sebastien','','','sebastien.charret@gmail.com',1,1,'2014-11-23 23:12:58.786275');
+INSERT INTO "auth_user" VALUES(2,'pbkdf2_sha256$12000$aJ1RBeeBTuq4$3eodnz6N17ghWJqC4BFOnYWG5PHW9murGT4sfd9ZqX8=','2014-11-26 01:06:00.438338',0,'truc','','','truc.bidule@truc.com',0,1,'2014-11-26 00:24:08.028026');
+INSERT INTO "auth_user" VALUES(3,'pbkdf2_sha256$12000$gMJpyoVAcYMa$gzI2PtNZ6Ln6sBb+Bc8e3ozddoM4c9ABSUrJpG0ZMKg=','2014-12-19 00:11:01.138341',0,'moerin','','','trash.sebastien@gmail.com',0,1,'2014-12-18 17:36:36.107235');
+INSERT INTO "auth_user" VALUES(4,'pbkdf2_sha256$12000$ukksFMqLqK0Y$VK6D7ZI1jF5VmMZyRNbrF06sCH4vGc/YrvA7t17nReY=','2014-12-22 23:52:05.265131',0,'maurice','','','maurice@truc.com',0,1,'2014-12-22 23:52:04.606333');
+CREATE TABLE "auth_user_groups" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "user_id" integer NOT NULL REFERENCES "auth_user" ("id"), "group_id" integer NOT NULL REFERENCES "auth_group" ("id"), UNIQUE ("user_id", "group_id"));
+CREATE TABLE "auth_user_user_permissions" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "user_id" integer NOT NULL REFERENCES "auth_user" ("id"), "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id"), UNIQUE ("user_id", "permission_id"));
+CREATE TABLE "django_admin_log" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "action_time" datetime NOT NULL, "object_id" text NULL, "object_repr" varchar(200) NOT NULL, "action_flag" smallint unsigned NOT NULL, "change_message" text NOT NULL, "content_type_id" integer NULL REFERENCES "django_content_type" ("id"), "user_id" integer NOT NULL REFERENCES "auth_user" ("id"));
+CREATE TABLE "django_session" ("session_key" varchar(40) NOT NULL PRIMARY KEY, "session_data" text NOT NULL, "expire_date" datetime NOT NULL);
+INSERT INTO "django_session" VALUES('k5qkg4pv8veuk253wvlyg9qurpednt8e','YTk3OTQwYjkxNGYxYWUyOTIxYWI5MDBkMzE2OTY5Zjg3YmYwMjM4Yzp7Il9hdXRoX3VzZXJfaGFzaCI6IjM0N2Q3OGUwMjVhYzcxNjBmODk1MGJlNGRjN2YyNGI4ZWVlYmZiNmQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOjJ9','2014-12-10 01:06:00.539501');
+INSERT INTO "django_session" VALUES('fbn828hz76m58ahmwho2tmz15h6vshgd','N2M3ODI2MmRiOGU5NWM2MGVhY2JiYjBkN2VlMDc0MTM0YWMwOWJmZDp7fQ==','2014-12-13 22:52:44.398099');
+INSERT INTO "django_session" VALUES('y4walts21mix1dq3zry17ouhrurm9r6h','N2M3ODI2MmRiOGU5NWM2MGVhY2JiYjBkN2VlMDc0MTM0YWMwOWJmZDp7fQ==','2014-12-31 01:12:11.346129');
+INSERT INTO "django_session" VALUES('v6bay8vfemr0auipwcs8cdmj8get51vl','ZDdlNTEyZTllNTZiZmVlNmJlNWMzMDcxOGZjNTczMDk1ZDg3ZDgwNDp7InZpc2l0cyI6OSwibGFzdF92aXNpdCI6IjIwMTQtMTItMTkgMDA6MTA6MTIuMDg3MzMzIiwiX2F1dGhfdXNlcl9oYXNoIjoiMzYxM2E5NTlkZjk0MGMyMTUzZDRmZGZlYzkyYzkwMDk0ZjhkYWYwYSIsIl9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=','2015-01-02 00:10:12.103223');
+INSERT INTO "django_session" VALUES('uv465fej697wstrbmfj7p22v54d01nuv','ODdjNDlhYWZiYTYxMDRjZDlmNGE2MWQ3MGY0YzU4NTAzOWFkNDA0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MywiX2F1dGhfdXNlcl9oYXNoIjoiN2NkZWI2YjAyMjEwNTExYjIyZjdjODY0N2FmMTgwYWRlNWEyYmQ1NyIsImxhc3RfdmlzaXQiOiIyMDE0LTEyLTE5IDA4OjU3OjU5Ljk2NDgwNCIsInZpc2l0cyI6N30=','2015-01-02 08:57:59.978511');
+INSERT INTO "django_session" VALUES('rkn4ywy6eqikveo41fbqbcq5a6zyvz9p','N2M3ODI2MmRiOGU5NWM2MGVhY2JiYjBkN2VlMDc0MTM0YWMwOWJmZDp7fQ==','2015-01-02 15:55:48.819640');
+INSERT INTO "django_session" VALUES('f9nyhj3frpcwfx6yifohcil836d6se75','MTM5YmU5NmY5YTVhMjEzMzY4NmMzYWNhNjY5NzdjYTE3OGE4MGFkMTp7InZpc2l0cyI6MSwibGFzdF92aXNpdCI6IjIwMTQtMTItMjAgMjM6Mzc6MDkuNzY3NjExIn0=','2015-01-03 23:37:09.868644');
+INSERT INTO "django_session" VALUES('omcbhlm8zeaqrk8ntbb6oli5538f2jfz','M2I0MjcyMTVhMGUzY2M2YWZkZDE5ODVhYWMxYmQ0ODQzMmIwYTRiNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6NCwiX2F1dGhfdXNlcl9oYXNoIjoiZjI0ZGFkYWY3ZjA4NjRhZjM2MzEzZDkzMWFjNTg5ZWY1YTg0ODI1ZCIsImxhc3RfdmlzaXQiOiIyMDE0LTEyLTIyIDIzOjUwOjQ2LjEwOTMyNSIsInZpc2l0cyI6MX0=','2015-01-05 23:52:05.411065');
+CREATE TABLE "rango_userprofile" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "website" varchar(200) NOT NULL, "picture" varchar(100) NOT NULL, "user_id" integer NOT NULL UNIQUE REFERENCES "auth_user" ("id"));
+INSERT INTO "rango_userprofile" VALUES(1,'','profile_images/Celestia1.png',2);
+CREATE TABLE "registration_registrationprofile" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "user_id" integer NOT NULL UNIQUE REFERENCES "auth_user" ("id"),
+    "activation_key" varchar(40) NOT NULL
+);
+DELETE FROM sqlite_sequence;
+INSERT INTO "sqlite_sequence" VALUES('django_content_type',10);
+INSERT INTO "sqlite_sequence" VALUES('django_migrations',5);
+INSERT INTO "sqlite_sequence" VALUES('auth_permission',30);
+INSERT INTO "sqlite_sequence" VALUES('auth_user',4);
+INSERT INTO "sqlite_sequence" VALUES('rango_category',5);
+INSERT INTO "sqlite_sequence" VALUES('rango_page',16);
+INSERT INTO "sqlite_sequence" VALUES('rango_userprofile',1);
+CREATE INDEX "rango_page_6f33f001" ON "rango_page" ("category_id");
+CREATE INDEX auth_permission_417f1b1c ON "auth_permission" ("content_type_id");
+CREATE INDEX auth_group_permissions_0e939a4f ON "auth_group_permissions" ("group_id");
+CREATE INDEX auth_group_permissions_8373b171 ON "auth_group_permissions" ("permission_id");
+CREATE INDEX auth_user_groups_e8701ad4 ON "auth_user_groups" ("user_id");
+CREATE INDEX auth_user_groups_0e939a4f ON "auth_user_groups" ("group_id");
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON "auth_user_user_permissions" ("user_id");
+CREATE INDEX auth_user_user_permissions_8373b171 ON "auth_user_user_permissions" ("permission_id");
+CREATE INDEX django_admin_log_417f1b1c ON "django_admin_log" ("content_type_id");
+CREATE INDEX django_admin_log_e8701ad4 ON "django_admin_log" ("user_id");
+CREATE INDEX django_session_de54fa62 ON "django_session" ("expire_date");
+COMMIT;

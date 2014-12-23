@@ -62,6 +62,13 @@ def category(request, category_name_slug):
         context_dict['category'] = category
         # Test for the slug
         context_dict['slug'] = category_name_slug
+
+        if request.method == 'POST':
+            query = request.POST['query'].strip()
+
+            if query:
+                context_dict['results'] = run_query(query)
+
     except Category.DoesNotExist:
         pass
 
@@ -203,3 +210,50 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'rango/search.html', {'result_list': result_list})
+
+
+def track_url(request):
+    redirection = '/rango/'
+
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+
+            requested_page = Page.objects.get(id=page_id)
+            requested_page.views = requested_page.views + 1
+            requested_page.save()
+
+            redirection = requested_page.url
+
+    return HttpResponseRedirect(redirection)
+
+"""
+To correct here, integrity error NOT NULL Constraint
+with rango_userprofile.user_id
+The user model seems not to be saved in the db
+"""
+def register_profile(request):
+    registered = False
+
+    if request.method == 'POST':
+        profile_form = UserProfileForm(data=request.POST)
+
+        if profile_form.is_valid():
+
+            profile = profile_form.save(commit=False)
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            registered = True
+
+        else:
+            print profile_form.errors
+
+    else:
+        profile_form = UserProfileForm()
+
+    return render(request, 'rango/profile_registration.html', {'profile_form': profile_form,
+                                                   'registered': registered})

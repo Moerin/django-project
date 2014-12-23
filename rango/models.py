@@ -30,8 +30,8 @@ class Page(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    website = models.URLField(blank=True, help_text="Please enter your url website")
+    picture = models.ImageField(upload_to='profile_images', blank=True, help_text="Insert an image to your profile")
 
     def __unicode__(self):
         return self.user.username
