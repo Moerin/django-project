@@ -5,4 +5,4 @@
 *.swp
 
 # ignore api keys
-keys.py
+keys.py*
