@@ -16,6 +16,9 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('rango.views.category', args=[str(self.slug)])
 
 class Page(models.Model):
     category = models.ForeignKey(Category)

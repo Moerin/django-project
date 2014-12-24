@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from .models import Category, Page
@@ -47,6 +47,17 @@ def index(request):
 
 def category(request, category_name_slug):
     context_dict = {}
+    context_dict['result_list'] = None
+    context_dict['query'] = None
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = run_query(query)
+
+            context_dict['result_list'] = result_list
+            context_dict['query'] = query
 
     # Try to fetch a category by slug name
     # if it can't, raises an DoesNotExist exception
@@ -55,7 +66,7 @@ def category(request, category_name_slug):
         # Get the name of the category
         context_dict['category_name'] = category.name
         # Get the associatives pages with the foreign key
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
         # Save the page for the context
         context_dict['pages'] = pages
         # Add the category objects for the context
@@ -63,14 +74,11 @@ def category(request, category_name_slug):
         # Test for the slug
         context_dict['slug'] = category_name_slug
 
-        if request.method == 'POST':
-            query = request.POST['query'].strip()
-
-            if query:
-                context_dict['results'] = run_query(query)
-
     except Category.DoesNotExist:
         pass
+
+    if not context_dict['query']:
+        context_dict['query'] = category.name
 
     return render(request, 'rango/category.html', context_dict)
 
@@ -117,7 +125,7 @@ def add_page(request, category_name_slug):
                 page.category = cat
                 page.views = 0
                 page.save()
-                return category(request, category_name_slug)
+                return redirect(cat)
         else:
             print form.errors
 
@@ -218,14 +226,15 @@ def track_url(request):
     if request.method == 'GET':
         if 'page_id' in request.GET:
             page_id = request.GET['page_id']
+            try:
+                requested_page = Page.objects.get(id=page_id)
+                requested_page.views = requested_page.views + 1
+                requested_page.save()
+                redirection = requested_page.url
+            except:
+                pass
 
-            requested_page = Page.objects.get(id=page_id)
-            requested_page.views = requested_page.views + 1
-            requested_page.save()
-
-            redirection = requested_page.url
-
-    return HttpResponseRedirect(redirection)
+    return redirect(redirection)
 
 """
 To correct here, integrity error NOT NULL Constraint
